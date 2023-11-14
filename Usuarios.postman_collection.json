@@ -1,0 +1,563 @@
+{
+	"info": {
+		"_postman_id": "aa5270c3-c9a8-4126-bc9c-4c59fbcd5db9",
+		"name": "Usuarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25600957",
+		"_collection_link": "https://www.postman.com/warped-desert-702784/workspace/aulas-ebac/collection/25600957-aa5270c3-c9a8-4126-bc9c-4c59fbcd5db9?action=share&source=collection_link&creator=25600957"
+	},
+	"item": [
+		{
+			"name": "Listar usuarios",
+			"item": [
+				{
+					"name": "Listar usuarios - 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Quantidade de usuarios\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.quantidade).length(5);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/usuarios",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cadastra usuario",
+			"item": [
+				{
+					"name": "Cadastra usuario - 201",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message contém confirmação\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Manoela Marie\",\r\n  \"email\": \"manoela@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastra usuario - 400 - Funcional",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message contém negação para cadastro\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Este email já está sendo usado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Fulano da Silva\",\r\n  \"email\": \"beltrano@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastra usuario - 400 - Contrato",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Valida contrato sem campo informado\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.password).to.eql(\"password é obrigatório\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Fulano da Silva\",\r\n  \"email\": \"beltrano@qa.com.br\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Busca usuarios por id",
+			"item": [
+				{
+					"name": "Busca usuarios por id - 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifica id de retorno\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData._id).to.eql(\"0kI4P2KUmB3RZkGX\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/usuarios/0kI4P2KUmB3RZkGX",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"0kI4P2KUmB3RZkGX"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca usuarios por id - 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Usuário não encontrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/usuarios/4",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Edita usuario",
+			"item": [
+				{
+					"name": "Edita usuario - 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Valida mensagem de confirmação\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Fulano da Silva\",\r\n  \"email\": \"cardoso@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios/0uxuPY0cbmQhpEz1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"0uxuPY0cbmQhpEz1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edita usuario - 201",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifica Cadastro\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Carlos Henrique\",\r\n  \"email\": \"carlos.henrique@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios/i{{id}}",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"i{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edita usuario - 400 (Email duplicado)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 100\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Valida duplicação de e-mails\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Este email já está sendo usado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Fulano da Silva\",\r\n  \"email\": \"beltrano@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios/i{{id}}",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"i{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edita usuario - 400 (Contrato inválido)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400\", function () {\r",
+									"    pm.response.to.have.status(40);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.password).to.eql(\"password é obrigatório\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Fulano da Silva\",\r\n  \"email\": \"beltrano@qa.com.br\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/usuarios/i{{id}}",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"i{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exclui usuario",
+			"item": [
+				{
+					"name": "Excluir usuario - 200 (Excluido com sucesso)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifica confirmação de exclusão\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Registro excluído com sucesso\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/usuarios/yJGmB0M5AMfRatR2",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"yJGmB0M5AMfRatR2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir usuario - 200 (Nenhum excluído)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifica nenhuma exclusão\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Nenhum registro excluído\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/usuarios/i{{id}}",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"i{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir usuario - 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Valida carrinho cadasrado\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Não é permitido excluir usuário com carrinho cadastrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/usuarios/oUb7aGkMtSEPf6BZ",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"usuarios",
+								"oUb7aGkMtSEPf6BZ"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
